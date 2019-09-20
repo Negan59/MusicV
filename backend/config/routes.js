@@ -1,0 +1,25 @@
+const admin = require('./admin')
+module.exports = app=>{
+    app.post('/i',app.api.user.post)
+    app.post('/validateToken', app.api.auth.validateToken)
+    app.route('/user')
+      .all(app.config.passport.authenticate())
+      .post(app.api.user.post)
+      .get(app.api.user.get)
+    app.route('/music/:_id')
+    .all(app.config.passport.authenticate())
+    .delete(admin(app.api.music.remove))
+    .post(admin(app.api.music.save))
+    app.route('/user/:email')
+     .all(app.config.passport.authenticate())
+     .delete(app.api.user.remove)
+    app.route('/signin')
+     .post(app.api.auth.signin)
+    app.get('/musicas',app.api.music.getU)
+    app.get('/vmusic',app.api.music.getV)
+    app.route('/stats')
+    .all(app.config.passport.authenticate())
+    .get(app.api.stat.get)
+    
+     
+}
